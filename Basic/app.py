@@ -20,7 +20,7 @@ def Home_page():
 
     return render_template('survey_page.html',title=title, givenInstr=instruction)
 
-@app.route('/start')
+@app.route('/start', method=['POST'])
 def start_survey():
     ''' Starts the survey '''
 
@@ -54,7 +54,6 @@ def questions(q_num):
 def get_answer():
     '''Get the question number form and its answer,also redirect to the next question '''
 
-    question_num = int(request.form('q_num'))
     ans = request.form('answer')
 
         # Stores answers

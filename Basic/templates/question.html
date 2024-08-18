@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
 
-{% block title %} Questionaire {% endblock %}
+{% block title %} {{ question_num }} {% endblock %}
 
 {% block header %} {% endblock %}
 {% block content %}
 
-    <form action="/answers" method="POST">
-        <h1>{{question.question}}</h1>
+<form action="/answers" method="POST">
+    <h1>{{question.question}}</h1>
 
-        {% for choice in question.choices %}
-        <!-- question.choices is the question param from Question method -->
-            <input type="radio" name="answer" id="{{ choice}}" value="{{ choice }}">
+    {% for choice in question.choices %}
+    <!-- question.choices is the question param from Question method -->
+    <label for="{{ choice}}">{{ choice }}</label>
+    <p><input type="radio" name="answer" id="{{choice}}" value="{{ choice }}"> {{ choice }} </p>
 
-            <label for="{{ choice}}">{{ choice }}</label>
-        {% endfor %}
-        <input type="hidden" name="q_num" value="q_num">
-        <button type="submit">Submit survey</button>
-    </form>
+    {% endfor %}
+    <input type="hidden" name="q_num" value="q_num">
+    <button type="submit">Submit survey</button>
+</form>
 
 {% endblock %}

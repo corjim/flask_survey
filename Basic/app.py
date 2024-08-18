@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, redirect, flash, session
 from surveys import Question, surveys, Survey, satisfaction_survey, personality_quiz
 from random import choices
-from flask_debugtoolbar import DebugToolbarExtension
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "dntKnow"
@@ -18,13 +18,18 @@ def Home_page():
 
     instruction = satisfaction_survey.instructions
 
-    return render_template('homepage.html',title=title, givenInstr=instruction)
+    return render_template('survey_page.html',title=title, givenInstr=instruction)
+
+@app.route('/start')
+def start_survey():
+    ''' Starts the survey '''
+
+    return redirect('/questions/0')
 
 
 @app.route('/questions/<int:q_num>')
 def questions(q_num):
-    questions = satisfaction_survey.questions[q_num]
-
+    
     if (responses is None):
         # Accessing questions without starting it.
         return redirect('/')
@@ -39,19 +44,23 @@ def questions(q_num):
     
     if q_num >= len(satisfaction_survey.questions):
         return redirect('/complete')
+    
+    questions = satisfaction_survey.questions[q_num]
 
     return render_template('question.html', question=questions, q_num=q_num)
 
 
 @app.route('/answers',methods=['POST'])
 def get_answer():
-    '''Get the question number form and its answer'''
+    '''Get the question number form and its answer,also redirect to the next question '''
 
     question_num = int(request.form('q_num'))
     ans = request.form('answer')
 
+        # Stores answers
     responses.append(ans) 
-    # Stores answers
+   
+        # All questions answered! Redirect to complete page.
     if (len(responses) == len(satisfaction_survey.questions)):
         return redirect('/complete')
     else:
@@ -62,8 +71,3 @@ def complete():
     '''Returns a thank you note'''
 
     return 'Thanks you for completing the survey'
-
-
-
-# ans = request.args('answers')
-# response.append(ans)

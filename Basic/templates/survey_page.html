@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
-{% block title%} Home Page {% endblock %}
-{% block header} {% endblock %}
+{% block title%} Survey Page {% endblock %}
+
 {% block content %}
 
 <h1>Welcome</h1>
 
 <h3>{{title}}</h3>
 <h5>{{givenInstr}}</h5>
-<form action="questions/1">
+<form action="/start" method="POST">
     <input type="hidden" name="start_question">
     <a href="questions/0">Start survey</a>
 </form>
